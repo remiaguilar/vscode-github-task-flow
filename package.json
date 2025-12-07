@@ -1,0 +1,152 @@
+{
+  "name": "github-task-flow",
+  "displayName": "GitHub Task Flow",
+  "description": "Integra la gestión de tareas de GitHub Projects con Git y el editor de código",
+  "version": "0.0.1",
+  "publisher": "remiaguilar",
+  "author": {
+    "name": "Remi Aguilar",
+    "url": "https://remiaguilar.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/remiaguilar/vs-notes"
+  },
+  "bugs": {
+    "url": "https://github.com/remiaguilar/vs-notes/issues"
+  },
+  "homepage": "https://github.com/remiaguilar/vs-notes#readme",
+  "keywords": [
+    "github",
+    "projects",
+    "tasks",
+    "git-integration",
+    "workflow",
+    "open-source"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "SCM Providers",
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "githubTaskFlow.authenticate",
+        "title": "GitHub Task Flow: Autenticar con GitHub"
+      },
+      {
+        "command": "githubTaskFlow.refreshProjects",
+        "title": "GitHub Task Flow: Actualizar Proyectos",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "githubTaskFlow.createBranchFromTask",
+        "title": "GitHub Task Flow: Crear Rama desde Tarea",
+        "icon": "$(git-branch)"
+      },
+      {
+        "command": "githubTaskFlow.openTaskInBrowser",
+        "title": "GitHub Task Flow: Abrir Tarea en GitHub"
+      },
+      {
+        "command": "githubTaskFlow.manageAccounts",
+        "title": "GitHub Task Flow: Gestionar Cuentas"
+      },
+      {
+        "command": "githubTaskFlow.createTask",
+        "title": "GitHub Task Flow: Crear Tarea",
+        "icon": "$(add)"
+      },
+      {
+        "command": "githubTaskFlow.editTask",
+        "title": "GitHub Task Flow: Editar Tarea",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "githubTaskFlow.deleteTask",
+        "title": "GitHub Task Flow: Eliminar Tarea",
+        "icon": "$(trash)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "githubTaskFlow",
+          "title": "GitHub Task Flow",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "githubTaskFlow": [
+        {
+          "id": "githubTaskFlow.projectsView",
+          "name": "Proyectos",
+          "icon": "$(project)"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "githubTaskFlow.manageAccounts",
+          "when": "view == githubTaskFlow.projectsView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "githubTaskFlow.refreshProjects",
+          "when": "view == githubTaskFlow.projectsView",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "githubTaskFlow.createTask",
+          "when": "view == githubTaskFlow.projectsView && viewItem == project"
+        },
+        {
+          "command": "githubTaskFlow.createBranchFromTask",
+          "when": "view == githubTaskFlow.projectsView && viewItem == task"
+        },
+        {
+          "command": "githubTaskFlow.openTaskInBrowser",
+          "when": "view == githubTaskFlow.projectsView && viewItem == task"
+        },
+        {
+          "command": "githubTaskFlow.editTask",
+          "when": "view == githubTaskFlow.projectsView && viewItem == task"
+        },
+        {
+          "command": "githubTaskFlow.deleteTask",
+          "when": "view == githubTaskFlow.projectsView && viewItem == task"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "build": "npm run compile && (code --uninstall-extension remiaguilar.github-task-flow || true) && npx @vscode/vsce package && code --install-extension github-task-flow-0.0.1.vsix --force",
+    "build": "npm run compile && (code --uninstall-extension remiaguilar.github-task-flow || true) && npx @vscode/vsce package && code --install-extension github-task-flow-0.0.1.vsix --force"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "@vscode/vsce": "^2.22.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "@octokit/graphql": "^7.0.2"
+  }
+}
